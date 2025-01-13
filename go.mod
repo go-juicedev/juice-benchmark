@@ -15,3 +15,6 @@ require (
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 )
+
+// 使用本地 juice 包
+replace github.com/go-juicedev/juice => ../juice

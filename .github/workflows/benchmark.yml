@@ -29,16 +29,27 @@ jobs:
           --health-retries=3
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout benchmark repository
+      uses: actions/checkout@v3
+      with:
+        path: juice-benchmark
+
+    - name: Checkout juice repository
+      uses: actions/checkout@v3
+      with:
+        repository: go-juicedev/juice
+        path: juice
 
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
-        go-version: '1.21'
+        go-version: '1.23'
         cache: true
     
     - name: Install dependencies
-      run: go mod download
+      run: |
+        cd juice-benchmark
+        go mod tidy
 
     - name: Wait for MySQL
       run: |
@@ -46,6 +57,7 @@ jobs:
       
     - name: Run benchmarks
       run: |
+        cd juice-benchmark
         # 显示工作目录内容
         ls -la
         
@@ -63,7 +75,7 @@ jobs:
       with:
         name: Go Benchmark
         tool: 'go'
-        output-file-path: benchmark_results.txt
+        output-file-path: juice-benchmark/benchmark_results.txt
         github-token: ${{ secrets.GITHUB_TOKEN }}
         auto-push: true
         alert-threshold: '200%'
