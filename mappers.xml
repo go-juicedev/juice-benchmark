@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<mapper namespace="github.com.go-juicedev.juice-benchmark.UserRepository">
+    <insert id="Create" useGeneratedKeys="true" keyProperty="ID">
+        insert into tbl_user(`name`, `age`, `email`)
+        values (#{name}, #{age}, #{email})
+    </insert>
+
+    <insert id="BatchCreate">
+        insert into tbl_user(`name`, `age`, `email`)
+        values
+        <foreach collection="users" item="user" separator=",">
+            (#{user.name}, #{user.age}, #{user.email})
+        </foreach>
+    </insert>
+
+    <select id="QueryAll">
+        select * from tbl_user
+    </select>
+
+</mapper>

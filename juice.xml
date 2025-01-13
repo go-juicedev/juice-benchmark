@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <environments default="prod">
+        <environment id="prod" provider="env">
+            <dataSource>${DATA_SOURCE}</dataSource>
+            <driver>mysql</driver>
+        </environment>
+    </environments>
+
+    <mappers>
+        <mapper resource="mappers.xml"/>
+    </mappers>
+</configuration>
