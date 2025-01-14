@@ -349,3 +349,79 @@ func BenchmarkUserQueryAll(b *testing.B) {
 		}
 	})
 }
+
+func BenchmarkUserQueryWithLimit(b *testing.B) {
+	const dataCount = 1000
+
+	b.Run("STD_DB", func(b *testing.B) {
+		if err := truncateAndRecreateTable(); err != nil {
+			b.Fatal(err)
+		}
+		prepareTestData(b, dataCount)
+
+		query := "SELECT * FROM tbl_user LIMIT ?"
+		b.ResetTimer()
+
+		for n := 0; n < b.N; n++ {
+			rows, err := db.Query(query, dataCount)
+			if err != nil {
+				b.Fatal(err)
+			}
+			users := make([]JuiceUser, 0, dataCount)
+			for rows.Next() {
+				var user JuiceUser
+				if err := rows.Scan(
+					&user.ID, &user.Name, &user.Age, &user.Email,
+					&user.CreatedAt, &user.UpdatedAt,
+				); err != nil {
+					rows.Close()
+					b.Fatal(err)
+				}
+				users = append(users, user)
+			}
+			rows.Close()
+			if len(users) != dataCount {
+				b.Fatalf("expected %d users, got %d", dataCount, len(users))
+			}
+		}
+	})
+
+	b.Run("Juice", func(b *testing.B) {
+		if err := truncateAndRecreateTable(); err != nil {
+			b.Fatal(err)
+		}
+		prepareTestData(b, dataCount)
+
+		ctx := juice.ContextWithManager(context.Background(), engine)
+		userRepo := NewUserRepository()
+		b.ResetTimer()
+
+		for n := 0; n < b.N; n++ {
+			users, err := userRepo.QueryWithLimit(ctx, dataCount)
+			if err != nil {
+				b.Fatal(err)
+			}
+			if len(users) != dataCount {
+				b.Fatalf("expected %d users, got %d", dataCount, len(users))
+			}
+		}
+	})
+
+	b.Run("GORM", func(b *testing.B) {
+		if err := truncateAndRecreateTable(); err != nil {
+			b.Fatal(err)
+		}
+		prepareTestData(b, dataCount)
+		b.ResetTimer()
+
+		for n := 0; n < b.N; n++ {
+			var users = make([]GormUser, 0, dataCount)
+			if err := gormDB.Limit(dataCount).Find(&users).Error; err != nil {
+				b.Fatal(err)
+			}
+			if len(users) != dataCount {
+				b.Fatalf("expected %d users, got %d", dataCount, len(users))
+			}
+		}
+	})
+}

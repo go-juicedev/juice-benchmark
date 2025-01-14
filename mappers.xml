@@ -18,4 +18,8 @@
         select * from tbl_user
     </select>
 
+    <select id="QueryWithLimit">
+        select * from tbl_user limit #{limit}
+    </select>
+
 </mapper>

@@ -35,6 +35,17 @@ func (u UserRepositoryImpl) QueryAll(ctx context.Context) (result0 []*JuiceUser,
 	return juice.List2[JuiceUser](rows)
 }
 
+func (u UserRepositoryImpl) QueryWithLimit(ctx context.Context, limit int) (result0 []*JuiceUser, result1 error) {
+	manager := juice.ManagerFromContext(ctx)
+	var iface UserRepository = u
+	rows, err := manager.Object(iface.QueryWithLimit).QueryContext(ctx, juice.H{"limit": limit})
+	if err != nil {
+		return nil, err
+	}
+	defer func() { _ = rows.Close() }()
+	return juice.List2[JuiceUser](rows)
+}
+
 // NewUserRepository returns a new UserRepository.
 func NewUserRepository() UserRepository {
 	return &UserRepositoryImpl{}
