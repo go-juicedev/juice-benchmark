@@ -16,11 +16,11 @@ All tests run on Apple M1 (darwin/arm64)
 
 ### Batch Creation Performance (1000 Records)
 
-| Framework | Operations | NS/Op | B/Op | Allocs/Op |
-|-----------|-----------|-------|------|-----------|
-| Standard DB | 202 | 6,158,115 | 578,805 | 35 |
-| Juice | 139 | 8,361,722 | 2,279,877 | 39,838 |
-| GORM | 128 | 9,287,681 | 1,494,794 | 13,062 |
+| Framework | Operations | NS/Op     | B/Op      | Allocs/Op |
+|-----------|------------|-----------|-----------|-----------|
+| Standard DB | 202        | 6,158,115 | 578,805   | 35        |
+| Juice | 144        | 7,713,170 | 1469,307  | 34,823    |
+| GORM | 128        | 9,287,681 | 1,494,794 | 13,062    |
 
 ### Query Performance (1000 Records)
 
