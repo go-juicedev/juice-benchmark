@@ -10,47 +10,47 @@ All tests run on Apple M1 (darwin/arm64)
 
 | Framework | Operations | NS/Op | B/Op | Allocs/Op |
 |-----------|-----------|-------|------|-----------|
-| Standard DB | 8,223 | 142,762 | 535 | 15 |
-| Juice | 10,000 | 145,863 | 2,937 | 61 |
-| GORM | 10,000 | 149,284 | 4,215 | 52 |
+| Standard DB | 8,398 | 145,237 | 535 | 15 |
+| Juice | 10,000 | 144,127 | 2,938 | 61 |
+| GORM | 10,000 | 156,914 | 4,215 | 52 |
 
 ### Batch Creation Performance (1000 Records)
 
 | Framework | Operations | NS/Op     | B/Op      | Allocs/Op |
 |-----------|------------|-----------|-----------|-----------|
-| Standard DB | 205 | 6,244,736 | 578,801 | 35 |
-| Juice | 160 | 7,854,467 | 1,334,235 | 21,838 |
-| GORM | 133 | 8,939,661 | 1,494,796 | 13,062 |
+| Standard DB | 205 | 6,343,141 | 578,807 | 35 |
+| Juice | 157 | 7,482,669 | 1,334,188 | 21,838 |
+| GORM | 124 | 9,133,590 | 1,494,789 | 13,062 |
 
 ### Query Performance (1000 Records)
 
 | Framework | Operations | NS/Op | B/Op | Allocs/Op |
 |-----------|-----------|-------|------|-----------|
-| Standard DB | 1,126 | 2,962,685 | 426,619 | 13,010 |
-| Juice | 950 | 3,361,973 | 590,998 | 14,047 |
-| GORM | 644 | 3,286,059 | 695,211 | 20,039 |
+| Standard DB | 1,136 | 3,044,905 | 426,618 | 13,010 |
+| Juice | 948 | 3,177,366 | 590,994 | 14,047 |
+| GORM | 621 | 4,099,117 | 695,196 | 20,039 |
 
 ### Analysis
 
 #### Single Record Creation
-- All three frameworks show remarkably close performance (within ~4.5% of each other)
-- Standard DB: Fastest at 142,762 ns/op with minimal memory usage (535 B/op)
-- Juice: About 2.2% slower than Standard DB
-- GORM: 4.6% slower than Standard DB but with higher memory usage
+- Juice now slightly outperforms Standard DB by about 0.8%
+- Standard DB maintains minimal memory usage (535 B/op)
+- GORM is about 8.8% slower than Juice
+- Memory allocation patterns remain consistent
 
 #### Batch Creation (1000 Records)
-- Standard DB performs significantly better: ~6.24ms per 1000 records
-- Juice is about 25.8% slower than Standard DB but shows good throughput
-- GORM is about 43.2% slower than Standard DB
-- Memory usage varies significantly:
+- Standard DB leads at ~6.34ms per 1000 records
+- Juice is about 18% slower than Standard DB
+- GORM is about 44% slower than Standard DB
+- Memory usage patterns:
   - Standard DB: Most efficient (578KB per op)
   - Juice: Moderate (1.33MB per op)
   - GORM: Highest (1.49MB per op)
 
 #### Query Performance
-- Standard DB leads with 2.96ms per 1000-record query
-- Juice is about 13.5% slower than Standard DB
-- GORM is about 10.9% slower than Standard DB
+- Standard DB processes queries in ~3.04ms per 1000 records
+- Juice is about 4.3% slower than Standard DB
+- GORM is about 34.6% slower than Standard DB
 - Memory allocation patterns:
   - Standard DB: Most efficient (426KB per op)
   - Juice: 38.5% more memory than Standard DB
