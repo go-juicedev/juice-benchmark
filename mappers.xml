@@ -6,7 +6,7 @@
         values (#{name}, #{age}, #{email})
     </insert>
 
-    <insert id="BatchCreate">
+    <insert id="BatchCreate" paramName="users">
         insert into tbl_user(`name`, `age`, `email`)
         values
         <foreach collection="users" item="user" separator=",">
@@ -14,10 +14,10 @@
         </foreach>
     </insert>
     
-    <insert id="BatchCreateWithBatchSize" batchSize="100" paramName="params">
+    <insert id="BatchCreateWithBatchSize" batchSize="100" paramName="users">
         insert into tbl_user(`name`, `age`, `email`)
         values
-        <foreach collection="params" item="user" separator=",">
+        <foreach collection="users" item="user" separator=",">
                 (#{user.name}, #{user.age}, #{user.email})
         </foreach>
     </insert>
