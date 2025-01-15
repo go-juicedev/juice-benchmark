@@ -6,46 +6,6 @@ This repository contains benchmark tests comparing the performance of Juice ORM 
 
 All tests run on Apple M1 (darwin/arm64)
 
-### Single Record Creation Performance
-
-| Framework | Operations | NS/Op | B/Op | Allocs/Op |
-|-----------|-----------|-------|------|-----------|
-| Standard DB | 9,100 | 133,040 | 535 | 15 |
-| Juice | 10,000 | 140,911 | 2,937 | 61 |
-| GORM | 10,000 | 144,790 | 4,215 | 52 |
-
-### Batch Creation Performance (1000 Records)
-
-| Framework | Operations | NS/Op     | B/Op      | Allocs/Op |
-|-----------|------------|-----------|-----------|-----------|
-| Standard DB | 211 | 6,041,218 | 578,805 | 35 |
-| Juice | 175 | 7,620,343 | 1,334,215 | 21,838 |
-| GORM | 130 | 8,931,485 | 1,494,792 | 13,062 |
-
-### Query All Performance (1000 Records)
-
-| Framework | Operations | NS/Op | B/Op | Allocs/Op |
-|-----------|-----------|-------|------|-----------|
-| Standard DB | 1,107 | 2,766,177 | 426,618 | 13,010 |
-| Juice | 949 | 3,480,474 | 590,999 | 14,047 |
-| GORM | 626 | 3,792,551 | 695,221 | 20,039 |
-
-### Query With Limit Performance
-
-| Framework | Operations | NS/Op | B/Op | Allocs/Op |
-|-----------|-----------|-------|------|-----------|
-| Standard DB | 1,327 | 2,654,317 | 336,534 | 8,673 |
-| Juice | 1,185 | 3,052,607 | 501,862 | 9,722 |
-| GORM | 637 | 4,269,654 | 557,873 | 20,037 |
-
-### User Batch Create Performance
-
-| Framework | Operations | NS/Op | B/Op | Allocs/Op |
-|-----------|-----------|-------|------|-----------|
-| Standard DB | 144 | 8,644,057 | 589,924 | 2,158 |
-| Juice | 100 | 21,040,470 | 1,017,162 | 21,618 |
-| GORM | 43 | 26,536,134 | 1,380,915 | 13,433 |
-
 ### Performance Visualization
 
 ```mermaid
@@ -97,25 +57,69 @@ gantt
     GORM      : 0, 26536134
 ```
 
-### Memory Usage and Allocations
+```mermaid
+gantt
+    title Memory Usage Comparison (B/op, lower is better)
+    dateFormat X
+    axisFormat %s
 
-| Operation | Framework | Memory (B/op) | Allocations (allocs/op) |
-|-----------|-----------|---------------|------------------------|
-| Single Create | STD DB | 535 | 15 |
-|              | Juice  | 2,937 | 61 |
-|              | GORM   | 4,215 | 52 |
-| Batch Create | STD DB | 578,805 | 35 |
-|              | Juice  | 1,334,215 | 21,838 |
-|              | GORM   | 1,494,792 | 13,062 |
-| Query All    | STD DB | 426,618 | 13,010 |
-|              | Juice  | 590,999 | 14,047 |
-|              | GORM   | 695,221 | 20,039 |
-| Query Limit  | STD DB | 336,534 | 8,673 |
-|              | Juice  | 501,862 | 9,722 |
-|              | GORM   | 557,873 | 20,037 |
-| User Batch   | STD DB | 589,924 | 2,158 |
-|              | Juice  | 1,017,162 | 21,618 |
-|              | GORM   | 1,380,915 | 13,433 |
+    section Single Create
+    STD DB    : 0, 535
+    Juice     : 0, 2937
+    GORM      : 0, 4215
+
+    section Batch Create
+    STD DB    : 0, 578805
+    Juice     : 0, 1334215
+    GORM      : 0, 1494792
+
+    section Query All
+    STD DB    : 0, 426618
+    Juice     : 0, 590999
+    GORM      : 0, 695221
+
+    section Query Limit
+    STD DB    : 0, 336534
+    Juice     : 0, 501862
+    GORM      : 0, 557873
+
+    section User Batch
+    STD DB    : 0, 589924
+    Juice     : 0, 1017162
+    GORM      : 0, 1380915
+```
+
+```mermaid
+gantt
+    title Memory Allocations Comparison (allocs/op, lower is better)
+    dateFormat X
+    axisFormat %s
+
+    section Single Create
+    STD DB    : 0, 15
+    Juice     : 0, 61
+    GORM      : 0, 52
+
+    section Batch Create
+    STD DB    : 0, 35
+    Juice     : 0, 21838
+    GORM      : 0, 13062
+
+    section Query All
+    STD DB    : 0, 13010
+    Juice     : 0, 14047
+    GORM      : 0, 20039
+
+    section Query Limit
+    STD DB    : 0, 8673
+    Juice     : 0, 9722
+    GORM      : 0, 20037
+
+    section User Batch
+    STD DB    : 0, 2158
+    Juice     : 0, 21618
+    GORM      : 0, 13433
+```
 
 ### Analysis
 
