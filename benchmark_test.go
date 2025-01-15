@@ -425,3 +425,98 @@ func BenchmarkUserQueryWithLimit(b *testing.B) {
 		}
 	})
 }
+
+// run with batchSize
+
+func BenchmarkUserBatchCreate(b *testing.B) {
+	const batchSize = 100
+	const times = 10
+
+	b.Run("STD_DB", func(b *testing.B) {
+		if err := truncateAndRecreateTable(); err != nil {
+			b.Fatal(err)
+		}
+
+		users := make([]JuiceUser, 0, batchSize*times)
+
+		for i := range batchSize * times {
+			users = append(users, JuiceUser{
+				Name:  "test" + strconv.Itoa(i),
+				Age:   18,
+				Email: "test" + strconv.Itoa(i) + "@example.com",
+			})
+		}
+
+		b.ResetTimer()
+
+		for n := 0; n < b.N; n++ {
+			for i := 0; i < times; i++ {
+				query := "INSERT INTO tbl_user(`name`, `age`, `email`) VALUES " + strings.Repeat("(?,?,?),", batchSize)
+				query = query[:len(query)-1]
+				values := make([]interface{}, 0, batchSize)
+				for j := 0; j < batchSize; j++ {
+					values = append(values, users[i*batchSize+j].Name, users[i*batchSize+j].Age, users[i*batchSize+j].Email)
+				}
+				if _, err := db.Exec(query, values...); err != nil {
+					b.Fatal(err)
+				}
+			}
+		}
+	})
+
+	b.Run("Juice", func(b *testing.B) {
+		if err := truncateAndRecreateTable(); err != nil {
+			b.Fatal(err)
+		}
+
+		ctx := juice.ContextWithManager(context.Background(), engine)
+		userRepo := NewUserRepository()
+		b.ResetTimer()
+
+		for n := 0; n < b.N; n++ {
+
+			users := timerScope(b, func() []*JuiceUser {
+				users := make([]*JuiceUser, 0, batchSize*times)
+
+				for i := range batchSize * times {
+					users = append(users, &JuiceUser{
+						Name:  "test" + strconv.Itoa(i),
+						Age:   18,
+						Email: "test" + strconv.Itoa(i) + "@example.com",
+					})
+				}
+				return users
+			})
+
+			if _, err := userRepo.BatchCreateWithBatchSize(ctx, users); err != nil {
+				b.Fatal(err)
+			}
+		}
+	})
+
+	b.Run("GORM", func(b *testing.B) {
+		if err := truncateAndRecreateTable(); err != nil {
+			b.Fatal(err)
+		}
+
+		b.ResetTimer()
+
+		for n := 0; n < b.N; n++ {
+			users := timerScope(b, func() []*GormUser {
+				var users = make([]*GormUser, 0, 1000)
+				for i := 0; i < 1000; i++ {
+					users = append(users, &GormUser{
+						Name:  "test" + strconv.Itoa(i),
+						Age:   18,
+						Email: "test" + strconv.Itoa(i) + "@example.com",
+					})
+				}
+				return users
+			})
+
+			if err := gormDB.CreateInBatches(users, batchSize).Error; err != nil {
+				b.Fatal(err)
+			}
+		}
+	})
+}

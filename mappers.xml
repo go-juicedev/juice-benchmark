@@ -13,6 +13,14 @@
             (#{user.name}, #{user.age}, #{user.email})
         </foreach>
     </insert>
+    
+    <insert id="BatchCreateWithBatchSize" batchSize="100" paramName="params">
+        insert into tbl_user(`name`, `age`, `email`)
+        values
+        <foreach collection="params" item="user" separator=",">
+                (#{user.name}, #{user.age}, #{user.email})
+        </foreach>
+    </insert>
 
     <select id="QueryAll">
         select * from tbl_user

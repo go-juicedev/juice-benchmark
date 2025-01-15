@@ -9,6 +9,7 @@ import (
 type UserRepository interface {
 	Create(ctx context.Context, user *JuiceUser) (sql.Result, error)
 	BatchCreate(ctx context.Context, users []*JuiceUser) (sql.Result, error)
+	BatchCreateWithBatchSize(ctx context.Context, users []*JuiceUser) (sql.Result, error)
 	QueryAll(ctx context.Context) ([]*JuiceUser, error)
 	QueryWithLimit(ctx context.Context, limit int) ([]*JuiceUser, error)
 }

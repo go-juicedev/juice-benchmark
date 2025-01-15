@@ -12,12 +12,12 @@ type JuiceUser struct {
 }
 
 type GormUser struct {
-	ID        uint `gorm:"primaryKey;autoIncrement"`
-	Name      string
-	Age       int
-	Email     string
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID        uint      `gorm:"primaryKey;autoIncrement"`
+	Name      string    `gorm:"column:name"`
+	Age       int       `gorm:"column:age"`
+	Email     string    `gorm:"column:email"`
+	CreatedAt time.Time `gorm:"column:created_at"`
+	UpdatedAt time.Time `gorm:"column:updated_at"`
 }
 
 func (GormUser) TableName() string {
