@@ -46,6 +46,38 @@ All tests run on Apple M1 (darwin/arm64)
 | Juice | 100 | 21,040,470 | 1,017,162 | 21,618 |
 | GORM | 43 | 26,536,134 | 1,380,915 | 13,433 |
 
+### Performance Visualization
+
+```mermaid
+xychart-beta
+    title "Performance Comparison (ns/op, lower is better)"
+    x-axis [Single Create, Batch Create, Query All, Query Limit, User Batch]
+    y-axis "Nanoseconds (log scale)" 1000 -> 30000000
+    line "STD DB" [133040, 6041218, 2766177, 2654317, 8644057]
+    line "Juice" [140911, 7620343, 3480474, 3052607, 21040470]
+    line "GORM" [144790, 8931485, 3792551, 4269654, 26536134]
+```
+
+```mermaid
+xychart-beta
+    title "Memory Usage Comparison (B/op, lower is better)"
+    x-axis [Single Create, Batch Create, Query All, Query Limit, User Batch]
+    y-axis "Bytes" 0 -> 1500000
+    bar "STD DB" [535, 578805, 426618, 336534, 589924]
+    bar "Juice" [2937, 1334215, 590999, 501862, 1017162]
+    bar "GORM" [4215, 1494792, 695221, 557873, 1380915]
+```
+
+```mermaid
+xychart-beta
+    title "Allocations Comparison (allocs/op, lower is better)"
+    x-axis [Single Create, Batch Create, Query All, Query Limit, User Batch]
+    y-axis "Count" 0 -> 22000
+    bar "STD DB" [15, 35, 13010, 8673, 2158]
+    bar "Juice" [61, 21838, 14047, 9722, 21618]
+    bar "GORM" [52, 13062, 20039, 20037, 13433]
+```
+
 ### Analysis
 
 #### Single Record Creation
