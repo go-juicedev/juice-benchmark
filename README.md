@@ -9,23 +9,6 @@ All tests run on Apple M1 (darwin/arm64)
 ### Performance Visualization
 
 ```mermaid
-graph TD
-    subgraph Performance_Comparison_ns_op
-        direction LR
-        A[Single Create]
-        B[Batch Create]
-        C[Query All]
-        D[Query Limit]
-        E[User Batch]
-    end
-
-    classDef default fill:#f9f,stroke:#333,stroke-width:2px
-    classDef performance fill:#dfd,stroke:#333,stroke-width:2px
-    
-    class A,B,C,D,E default
-```
-
-```mermaid
 gantt
     title Performance Comparison (ns/op, lower is better)
     dateFormat X
@@ -87,38 +70,6 @@ gantt
     STD DB    : 0, 589924
     Juice     : 0, 1017162
     GORM      : 0, 1380915
-```
-
-```mermaid
-gantt
-    title Memory Allocations Comparison (allocs/op, lower is better)
-    dateFormat X
-    axisFormat %s
-
-    section Single Create
-    STD DB    : 0, 15
-    Juice     : 0, 61
-    GORM      : 0, 52
-
-    section Batch Create
-    STD DB    : 0, 35
-    Juice     : 0, 21838
-    GORM      : 0, 13062
-
-    section Query All
-    STD DB    : 0, 13010
-    Juice     : 0, 14047
-    GORM      : 0, 20039
-
-    section Query Limit
-    STD DB    : 0, 8673
-    Juice     : 0, 9722
-    GORM      : 0, 20037
-
-    section User Batch
-    STD DB    : 0, 2158
-    Juice     : 0, 21618
-    GORM      : 0, 13433
 ```
 
 ### Analysis
