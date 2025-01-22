@@ -15,29 +15,29 @@ gantt
     axisFormat %s
 
     section Single Create
-    STD DB    : 0, 133040
-    Juice     : 0, 140911
-    GORM      : 0, 144790
+    STD DB    : 0, 146987
+    Juice     : 0, 150563
+    GORM      : 0, 156854
 
     section Batch Create
-    STD DB    : 0, 6041218
-    Juice     : 0, 7620343
-    GORM      : 0, 8931485
+    STD DB    : 0, 6537785
+    Juice     : 0, 7554032
+    GORM      : 0, 8992265
 
     section Query All
-    STD DB    : 0, 2766177
-    Juice     : 0, 3480474
-    GORM      : 0, 3792551
+    STD DB    : 0, 3005820
+    Juice     : 0, 3316007
+    GORM      : 0, 3741352
 
     section Query Limit
-    STD DB    : 0, 2654317
-    Juice     : 0, 3052607
-    GORM      : 0, 4269654
+    STD DB    : 0, 2711460
+    Juice     : 0, 2620487
+    GORM      : 0, 4054708
 
     section User Batch
-    STD DB    : 0, 8644057
-    Juice     : 0, 21040470
-    GORM      : 0, 26536134
+    STD DB    : 0, 9558058
+    Juice     : 0, 18814854
+    GORM      : 0, 24954145
 ```
 
 ```mermaid
@@ -48,66 +48,66 @@ gantt
 
     section Single Create
     STD DB    : 0, 535
-    Juice     : 0, 2937
-    GORM      : 0, 4215
+    Juice     : 0, 2665
+    GORM      : 0, 4376
 
     section Batch Create
-    STD DB    : 0, 578805
-    Juice     : 0, 1334215
-    GORM      : 0, 1494792
+    STD DB    : 0, 578819
+    Juice     : 0, 1334136
+    GORM      : 0, 1494996
 
     section Query All
-    STD DB    : 0, 426618
-    Juice     : 0, 590999
-    GORM      : 0, 695221
+    STD DB    : 0, 426625
+    Juice     : 0, 494717
+    GORM      : 0, 695234
 
     section Query Limit
-    STD DB    : 0, 336534
-    Juice     : 0, 501862
-    GORM      : 0, 557873
+    STD DB    : 0, 336536
+    Juice     : 0, 405715
+    GORM      : 0, 557859
 
     section User Batch
-    STD DB    : 0, 589924
-    Juice     : 0, 1017162
-    GORM      : 0, 1380915
+    STD DB    : 0, 589931
+    Juice     : 0, 1016651
+    GORM      : 0, 1382682
 ```
 
 ### Analysis
 
 #### Single Record Creation
-- Standard DB performs best at ~133μs per operation
-- Juice is about 5.9% slower than Standard DB
-- GORM is about 8.8% slower than Standard DB
+- Standard DB performs best at ~146μs per operation
+- Juice is about 2.5% slower than Standard DB
+- GORM is about 6.6% slower than Standard DB
 - Memory allocation patterns remain consistent with Standard DB being most efficient
 
 #### Batch Creation (1000 Records)
-- Standard DB leads at ~6.04ms per 1000 records
-- Juice is about 26.1% slower than Standard DB
-- GORM is about 47.8% slower than Standard DB
+- Standard DB leads at ~6.54ms per 1000 records
+- Juice is about 15.5% slower than Standard DB
+- GORM is about 37.6% slower than Standard DB
 - Memory usage patterns:
   - Standard DB: Most efficient (578KB per op)
   - Juice: Moderate (1.33MB per op)
   - GORM: Highest (1.49MB per op)
 
 #### Query Performance
-- Standard DB processes queries in ~2.77ms per 1000 records
-- Juice is about 25.8% slower than Standard DB
-- GORM is about 37.1% slower than Standard DB
+- Standard DB processes queries in ~3.01ms per 1000 records
+- Juice is about 10.3% slower than Standard DB
+- GORM is about 24.5% slower than Standard DB
 - Memory allocation patterns:
   - Standard DB: Most efficient (426KB per op)
-  - Juice: 38.5% more memory than Standard DB
+  - Juice: 15.8% more memory than Standard DB
   - GORM: 63% more memory than Standard DB
 
 #### Query With Limit Performance
-- Standard DB shows best performance at ~2.65ms per operation
-- Juice is about 15% slower than Standard DB
-- GORM is about 60.9% slower than Standard DB
+- Standard DB shows best performance at ~2.71ms per operation
+- Juice is about 3.3% faster than Standard DB
+- GORM is about 49.6% slower than Standard DB
 - Memory usage is notably lower compared to querying all records
 
 #### User Batch Create Performance
-- Standard DB shows best performance at ~8.64ms per operation
-- Juice is about 143.4% slower than Standard DB
-- GORM is about 207% slower than Standard DB
+- Standard DB shows best performance at ~9.56ms per operation
+- Juice is about 96.5% slower than Standard DB
+- GORM is about 161% slower than Standard DB
 - Memory allocation patterns:
   - Standard DB: Most efficient (589KB per op)
   - Juice: 72.4% more memory than Standard DB
