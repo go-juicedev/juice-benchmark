@@ -72,38 +72,6 @@ gantt
     GORM      : 0, 1382682
 ```
 
-```mermaid
-gantt
-    title Memory Allocations Comparison (allocs/op, lower is better)
-    dateFormat X
-    axisFormat %s
-
-    section Single Create
-    STD DB    : 0, 15
-    Juice     : 0, 47
-    GORM      : 0, 53
-
-    section Batch Create
-    STD DB    : 0, 35
-    Juice     : 0, 21830
-    GORM      : 0, 13064
-
-    section Query All
-    STD DB    : 0, 13010
-    Juice     : 0, 13038
-    GORM      : 0, 20040
-
-    section Query Limit
-    STD DB    : 0, 8673
-    Juice     : 0, 8713
-    GORM      : 0, 20037
-
-    section User Batch
-    STD DB    : 0, 2158
-    Juice     : 0, 21539
-    GORM      : 0, 13445
-```
-
 ### Analysis
 
 #### Single Record Creation
