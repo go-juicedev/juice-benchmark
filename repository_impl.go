@@ -21,14 +21,14 @@ func (u UserRepositoryImpl) BatchCreate(ctx context.Context, users []*JuiceUser)
 	manager := juice.ManagerFromContext(ctx)
 	var iface UserRepository = u
 	executor := juice.NewGenericManager[any](manager).Object(iface.BatchCreate)
-	return executor.ExecContext(ctx, users)
+	return executor.ExecContext(ctx, juice.H{"users": users})
 }
 
 func (u UserRepositoryImpl) BatchCreateWithBatchSize(ctx context.Context, users []*JuiceUser) (result0 sql.Result, result1 error) {
 	manager := juice.ManagerFromContext(ctx)
 	var iface UserRepository = u
 	executor := juice.NewGenericManager[any](manager).Object(iface.BatchCreateWithBatchSize)
-	return executor.ExecContext(ctx, users)
+	return executor.ExecContext(ctx, juice.H{"users": users})
 }
 
 func (u UserRepositoryImpl) QueryAll(ctx context.Context) (result0 []*JuiceUser, result1 error) {

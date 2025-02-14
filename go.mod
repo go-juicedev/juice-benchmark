@@ -1,8 +1,6 @@
 module github.com/go-juicedev/juice-benchmark
 
-go 1.23
-
-toolchain go1.23.2
+go 1.24
 
 require (
 	github.com/go-juicedev/juice v1.6.7
